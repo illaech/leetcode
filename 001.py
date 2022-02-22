@@ -34,20 +34,23 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 """
 
 
+def solve(nums: list[int], target) -> list[int]:
+    diffs = {target - x for x in nums}
+    numbers = set(nums).intersection(diffs)
+
+    if len(numbers) == 1:
+        return list(numbers) * 2
+    if len(numbers) > 2:
+        return list(numbers - {target / 2})
+    return list(numbers)
+
+
 class Solution:
     def twoSum(self, nums: list[int], target: int) -> list[int]:
-        diffs = {target - x for x in nums}
-        numbers = set(nums).intersection(diffs)
-
-        if len(numbers) == 1:
-            result = list(numbers) * 2
-        elif len(numbers) > 2:
-            result = list(numbers - {target / 2})
-        else:
-            result = list(numbers)
+        numbers = solve(nums, target)
 
         indicies = [0] * 2
-        for i, n in enumerate(result):
+        for i, n in enumerate(numbers):
             idx = nums.index(n)
             nums[idx] = None
             indicies[i] = idx
