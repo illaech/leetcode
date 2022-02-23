@@ -64,10 +64,10 @@ def solve(a: list[int], b: list[int]) -> int | float:
     equal. It means that every element inside the left half would be less or equal to every element of the right half;
     and resulting middle elements would be on borders of partitions for each array. For example, if the first array is
     [1, 2, 6] and the second is [3, 4, 7], split would look like [1, 2] | [6] and [3] | [4, 7]. Number of elements on
-    each side is 3, e.g. for left half the are 2 from the first array and 1 from the second. If total number of
-    elements is odd, then the left half will have one element more than right half.
+    each half is 3, e.g. for left half they are 2 from the first array and 1 from the second. If total number of
+    elements is odd, then the left half will have one element more than the right half.
 
-    To find such split there's a condition to satisfy: the last element of the left partition of the first array must
+    To find such split, there's a condition to satisfy: the last element of the left partition of the first array must
     be less or equal to the first element of the right partition of the second array, and the last element of the left
     partition of the second array must be less or equal to the first element of the right partition of the first array.
 
