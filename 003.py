@@ -37,8 +37,8 @@ class Solution:
         # If char that is already in set appears, clean the set and refill it up with symbols starting on
         # previous occurence of symbol + 1. Now, all you need is to keep max length right.
         # Such recalculations consume a lot of time, so it was faster just to use dict, keeping last occurences of
-        # symbols. But now I can't operate just lengths, I need a position to calculate it, because the dict can and
-        # will contain positions that are beyond current starting symbol. To avoid it, all I need is to keep current
+        # symbols. But now I can't operate with just lengths, I need a position to calculate it, because the dict can
+        # and will contain positions that are beyond current starting symbol. To avoid it, all I need is to keep current
         # starting position and check if last occurence of current symbol is in current substring or is before it.
 
         seen, start, max_length = dict(), 0, 0
