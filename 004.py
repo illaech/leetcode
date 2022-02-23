@@ -71,8 +71,8 @@ def solve(a: list[int], b: list[int]) -> int | float:
     be less or equal to the first element of the right partition of the second array, and the last element of the left
     partition of the second array must be less or equal to the first element of the right partition of the first array.
 
-    Let's make some variables: α and β are the given arrays of size m and n; αₗ, αᵣ, βₗ, βᵣ are the left and right
-    partitions of the arrays α and β; α₁ = αₗ[-1], α₂ = αᵣ[0], β₁ = βₗ[-1], β₂ = βᵣ[0] are border elements;
+    Let's make some variables: α and β are the given arrays of size m and n; αʟ, αʀ, βʟ, βʀ are the left and right
+    partitions of the arrays α and β; α₁ = αʟ[-1], α₂ = αʀ[0], β₁ = βʟ[-1], β₂ = βʀ[0] are border elements;
     and z = m + n is the total number of elements in both arrays.
 
     So, the goal here is to find such split positions, that α₁ ≤ β₂ and β₁ ≤ α₂. After finding such position, all that
@@ -92,7 +92,7 @@ def solve(a: list[int], b: list[int]) -> int | float:
     moving to separate positions for each array: posₐ + posᵦ = (z + 1) // 2, and finally, posᵦ = (z + 1) // 2 - posₐ.
 
     Because it is possible to have all of the elements from array α greater than all of the elements of array β,
-    posₐ would be equal to 0 and αₗ would be empty. To get through this (and similar) situation(s) it's needed to
+    posₐ would be equal to 0 and αʟ would be empty. To get through this (and similar) situation(s) it's needed to
     provide two more rules:
     - if left partition is empty, its last element is treated as -inf,
     - if right partition is empty, its first element is threated as +inf.
