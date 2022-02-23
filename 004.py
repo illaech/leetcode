@@ -1,5 +1,11 @@
 """4. Median of Two Sorted Arrays
 
+Difficulty:
+    Hard.
+
+Link:
+    https://leetcode.com/problems/median-of-two-sorted-arrays
+
 Description:
     Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
 
@@ -53,37 +59,43 @@ def get_or_inf(seq: list[int], idx: int, sign: Literal[1, -1] = 1) -> int | floa
 def solve(a: list[int], b: list[int]) -> int | float:
     """Retrieve median of sorted arrays.
 
-    Median of array is either middle element or average of two middle elements. To avoid merging arrays into one, the
-    logical trick can be used: all is needed is to split arrays in such way that resulting middle elements would be
-    on borders of partitions. For example, if the first array is [1, 2, 6] and the second is [3, 7], split would
-    look like [1, 2] | [6] and [3] | [7]. Thus, the last element of the left partition of the first array must be
-    less or equal to the first element of the right partition of the second array, and the last element of the left
-    partition of the second array must be less or equal to the first element of the right partition of the first array.
-    Let's make some variables: α and β are the given arrays of size m and n; αₗ, αᵣ, βₗ, βᵣ are the partitions of the
-    arrays α and β; α₁ = αₗ[-1], α₂ = αᵣ[0], β₁ = βₗ[-1], β₂ = βᵣ[0] are border elements; and z = m + n — total number
-    of elements in both arrays. So, the goal here is to find such split position, that α₁ ≤ β₂ and β₁ ≤ α₂. After
-    finding such position, all border elements are medium-esque: every element inside left partitions is less or equal
-    to any element of right partitions. So, all that is needed is to find the real "medium", and this search vary on
-    oddness of total number of elements z. If z is odd, the result is max(α₁, β₁), otherwise the result is equal to
-    average(max(α₁, β₁), min(α₂, β₂)). For that little example result is max(2, 3) == 3.
+    Median of an array is either the middle element or an average of two middle elements. To avoid merging arrays into
+    one, one logical trick can be used: split the arrays into two halfs so the number of elements in both halfs are
+    equal. It means that every element inside the left half would be less or equal to every element of the right half;
+    and resulting middle elements would be on borders of partitions for each array. For example, if the first array is
+    [1, 2, 6] and the second is [3, 4, 7], split would look like [1, 2] | [6] and [3] | [4, 7]. Number of elements on
+    each side is 3, e.g. for left half the are 2 from the first array and 1 from the second. If total number of
+    elements is odd, then the left half will have one element more than right half.
 
-    To find the correct split position the binary search is used. Starting at the middle of α, there's a check for
-    needed condition: α₁ ≤ β₂ and β₁ ≤ α₂. If the first half is false, then the search is too much on the right side
-    and needed to be shifted to the left, so the ending point is moved to the previous position - 1. If the latter half
-    is false, then the search is too much on the left, so the starting point is moved to the previous position + 1.
-    It goes on until the needed condition is satisfied.
+    To find such split there's a condition to satisfy: the last element of the left partition of the first array must
+    be less or equal to the first element of the right partition of the second array, and the last element of the left
+    partition of the second array must be less or equal to the first element of the right partition of the first array.
+
+    Let's make some variables: α and β are the given arrays of size m and n; αₗ, αᵣ, βₗ, βᵣ are the left and right
+    partitions of the arrays α and β; α₁ = αₗ[-1], α₂ = αᵣ[0], β₁ = βₗ[-1], β₂ = βᵣ[0] are border elements;
+    and z = m + n is the total number of elements in both arrays.
+
+    So, the goal here is to find such split positions, that α₁ ≤ β₂ and β₁ ≤ α₂. After finding such position, all that
+    is needed is to find the real "medium", and this search vary on oddness of total number of elements z. If z is odd,
+    the result is equal to  max(α₁, β₁), otherwise the result is equal to average(max(α₁, β₁), min(α₂, β₂)).
+    For that little example result is average(max(2, 3), min(6, 4)) == 3.5.
+
+    To find the correct split positions the binary search is used. Starting at the middle of α, there's a check for
+    needed condition: α₁ ≤ β₂ and β₁ ≤ α₂. If the first half of the condition is false, the search is too much on the
+    right side and is needed to be shifted to the left, so the ending point is moved to the previous position - 1.
+    If the latter half is false, the search is too much on the left, so the starting point is moved to the previous
+    position + 1. It goes on until the needed condition is satisfied.
 
     Split position in the α array is calculating simply: posₐ = (start + end) // 2. Split position in the β array is
-    more complex. It is coming from our goal: median is the middle element, so we need to split both of our arrays
-    combined into two halfs with the same number of elements, so z / 2 is such a number. Due to z might be odd let's
-    add 1 and round it down: (z + 1) // 2. Thus, moving to separate positions for each array:
-    posₐ + posᵦ = (z + 1) // 2, and finally posᵦ = (z + 1) // 2 - posₐ.
+    more complex. It is coming from our goal: we need to split both of our arrays into two halfs with the same number
+    of elements, so z / 2 is such a number. Due to z might be odd, let's add 1 and round it down: (z + 1) // 2. Thus,
+    moving to separate positions for each array: posₐ + posᵦ = (z + 1) // 2, and finally, posᵦ = (z + 1) // 2 - posₐ.
 
     Because it is possible to have all of the elements from array α greater than all of the elements of array β,
-    posₐ would be equal to 0 and αₗ would be empty. To get through this (and similar) situation it's needed to give
-    two more rules:
-        - if left partition is empty, its last element is treated as -inf,
-        - if right partition is empty, its first element is threated as +inf.
+    posₐ would be equal to 0 and αₗ would be empty. To get through this (and similar) situation(s) it's needed to
+    provide two more rules:
+    - if left partition is empty, its last element is treated as -inf,
+    - if right partition is empty, its first element is threated as +inf.
 
 
     Args:
@@ -137,7 +149,7 @@ def main():
     assert sol.findMedianSortedArrays([1, 3], [2]) == 2
     assert sol.findMedianSortedArrays([1, 2], [3, 4]) == 2.5
     assert sol.findMedianSortedArrays([1, 2], [3, 4, 5]) == 3
-    assert sol.findMedianSortedArrays([1, 2, 6], [3, 7]) == 3
+    assert sol.findMedianSortedArrays([1, 2, 6], [3, 4, 7]) == 3.5
 
 
 if __name__ == "__main__":

@@ -1,5 +1,11 @@
 """2. Add Two Numbers
 
+Difficulty:
+    Medium.
+
+Link:
+    https://leetcode.com/problems/add-two-numbers
+
 Description:
     You are given two non-empty linked lists representing two non-negative integers.
     The digits are stored in reverse order, and each of their nodes contains a single digit.
@@ -74,10 +80,10 @@ class Solution:
 def main():
     sol = Solution()
 
-    def ln(l: list[int]) -> ListNode:
-        fst = ListNode(l[0])
+    def ln(lst: list[int]) -> ListNode:
+        fst = ListNode(lst[0])
         iterator = fst
-        for i in l[1:]:
+        for i in lst[1:]:
             y = ListNode(i)
             iterator.next = y
             iterator = y
