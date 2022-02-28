@@ -30,19 +30,21 @@ Results:
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        # Kinda straight-forward approach. Starting with the first character at position i, find same character from
-        # the end of the string at position j. Then, if a substring between i and j is a palindrome, do the same thing
-        # for the next character. If next found palindrom is longer than current one, use it as current.
-        # To speed up the process, there're some conditions to break from loops early:
-        #   1. if whole given string is a palindrome, just return it as a result.
-        #   2. If current substring (from i to the end of the string) is a palindrome, return it¹.
-        #   3. If the current maximum is greater than the length of the rest of the string, exit².
-        #   4. If the length of substring between i and j is less than the current maximum, skip to the next char³.
-        #   5. If the length of a new found longest palindrome is greater than the length of the rest of the string,
-        #      exit¹.
+        # Kinda straight-forward approach. Starting with the first character at position i, find the same character
+        # from the end of the string at position j. Then, if a substring between i and j is a palindrome, do the same
+        # thing for the next character. If it isn't, find the next occurence of the character to the left of the
+        # previous position j. Compare the length of found palindrom to the length of the current longest palindrome
+        # (the current maximum) and pick the longest palindrome as the result.
         #
-        # ¹ — conditions 1 and 5 work together: if the current substring is a palindrome, it will never be shorter
-        #      than the current maximum because conditions 3 and 5 will be satisfied earlier.
+        # To speed up the process, there're some conditions to break from loops early:
+        #   1. if whole given string is a palindrome, return it as a result.
+        #   2. If a current substring (from i to the end of the string) is a palindrome, return it¹.
+        #   3. If the current maximum is greater than the length of the rest of the string, exit².
+        #   4. If the length of a substring between i and j is less than the current maximum, skip to the next char³.
+        #   5. If the length of a new found palindrome is greater than the length of the rest of the string, exit¹.
+        #
+        # ¹ — conditions 1, 3 and 5 are working together: if the current substring is a palindrome, it will never be
+        #      shorter than the current maximum because conditions 3 and 5 will be satisfied earlier.
         # ² — "exit" hereinafter means "return the current longest palindrome".
         # ³ — is made by setting the start value for rfind to i + maximum.
 
