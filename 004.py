@@ -77,7 +77,7 @@ def solve(a: list[int], b: list[int]) -> int | float:
 
     So, the goal here is to find such split positions, that α₁ ≤ β₂ and β₁ ≤ α₂. After finding such position, all that
     is needed is to find the real "medium", and this search vary on oddness of total number of elements z. If z is odd,
-    the result is equal to  max(α₁, β₁), otherwise the result is equal to average(max(α₁, β₁), min(α₂, β₂)).
+    the result is equal to max(α₁, β₁), otherwise the result is equal to average(max(α₁, β₁), min(α₂, β₂)).
     For that little example result is average(max(2, 3), min(6, 4)) == 3.5.
 
     To find the correct split positions the binary search is used. Starting at the middle of α, there's a check for
