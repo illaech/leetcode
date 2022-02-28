@@ -55,24 +55,23 @@ Results:
 
 
 class Solution:
-    # It's obvious, that position of each character is easily calculated. The string is split into several blocks
-    # containing `numRows * 2 - 2` characters each. For keeping each row, let's create an array of empty strings with
-    # a length of `numRows` and join them at the end.
-    #
     # At first, it's possible to skip all the calculations if `numRows == 1` or the length of the given string is less
-    # or equal to the `numRows`.
+    # or equal to the `numRows`. As for storing the results: let's create an array of empty strings, which one
+    # representing a row, with a length of `numRows`, and join them at the end.
     #
-    # Then, first approach was to calculate positions and append each character to the right row. Let's take char at
-    # position `i`. Corresponding row number would be `row = i % (numRows * 2 - 2)`, and if such row number is greater
-    # than `numRows - 1`, then `row = (numRows - 1) * 2 - row` because it's on the backwards line.
+    # It's easy to see that resulting "image" has repeating pattern with each block containing `numRows * 2 - 2`
+    # characters, e.g. 4 for 3 and 6 for 4. So, first approach was to calculate positions and append each character to
+    # the right row. Let's take char at position `i`. Corresponding row number would be `row = i % (numRows * 2 - 2)`,
+    # and if such row number is greater than `numRows - 1`, then `row = (numRows - 1) * 2 - row` because it's on the
+    # backwards line.
     #
-    # But why to calculate row index at all? It always goes up and down by 1 until meets top or bottom border.
+    # But why to calculate row index at all? It always goes up and down by 1 until met top or bottom border.
     # So, next approach is to create an index variable `i` and direction flag `up`. If direction is "up", next index
-    # will be equal to `i + 1`, and if "down", `i - 1`. So, `i += 1 if up else - 1`. Next step is to change direction:
-    # if calculated index is less than 0 or greater than `numRows - 1`, do the switch. Also, it's needed to reset the
-    # index value. Thus, `if i < 0 or i > numRows - 1` then `i = numRows - 2 if up else 1` and `up = not up`.
-    # Notice: such index resetting is incorrect if starting skip isn't applied, it'd be
-    # `i = max(0, numRows - 2) if up else min(numRows - 1, 1)`, because `numRows` can be equal to 1.
+    # will be equal to `i + 1`, and if "down", `i - 1`, or, combining both, `i += 1 if up else -1`. Next step is to
+    # change direction: if calculated index is less than 0 or greater than `numRows - 1`, do the switch. Also, it's
+    # needed to reset the index value. Thus, `if i < 0 or i > numRows - 1` then `i = numRows - 2 if up else 1` and
+    # `up = not up`. Notice that such index resetting is incorrect if starting skip isn't applied, general value would
+    # be equal to `i = max(0, numRows - 2) if up else min(numRows - 1, 1)`, because `numRows` can be equal to 1.
     #
     # So, first approach is implemented as `convert_a`, second one as `convert_b`.
 
